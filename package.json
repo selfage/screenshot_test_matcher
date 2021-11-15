@@ -1,7 +1,7 @@
 {
   "name": "@selfage/screenshot_test_matcher",
-  "version": "0.0.1",
-  "description": ".",
+  "version": "1.0.0",
+  "description": "Screenshot testing in browser.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/selfage/screenshot_test_matcher.git"
@@ -18,6 +18,8 @@
     "Difference",
     "Diff",
     "PNG",
+    "Browser",
+    "Puppeteer",
     "TypeScript"
   ],
   "author": "Yuxuan Xie <teststaybaka@gmail.com> (http://www.yuxuanxie.com)",
