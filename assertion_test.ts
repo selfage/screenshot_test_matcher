@@ -145,6 +145,9 @@ PUPPETEER_TEST_RUNNER.run({
           }
         );
       },
+      tearDown: async () => {
+        removeImage();
+      },
     },
   ],
 });
