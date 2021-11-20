@@ -1,6 +1,6 @@
 {
   "name": "@selfage/screenshot_test_matcher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Screenshot testing in browser.",
   "repository": {
     "type": "git",

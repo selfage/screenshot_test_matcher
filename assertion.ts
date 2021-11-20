@@ -77,7 +77,7 @@ export async function asyncAssertScreenshot(
     });
     await writeFile(diffFile, diffImgFileData);
     throw new Error(
-      `Actual screesnhot "${actualFile}" doesn't match expected ` +
+      `Actual screenshot "${actualFile}" doesn't match expected ` +
         `"${expectedFile}".`
     );
   } else {
