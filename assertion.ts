@@ -91,9 +91,13 @@ export async function asyncAssertScreenshot(
 
 async function loadImage(path: string): Promise<HTMLImageElement> {
   let img = new Image();
-  let loaded = new Promise<void>((resolve, reject) => {
+  let loaded = new Promise<void>((resolve) => {
     img.onload = () => {
       resolve();
+    };
+    img.onerror = () => {
+      // Transparent 1 pixel PNG.
+      img.src = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=`;
     };
   });
   img.src = path;
