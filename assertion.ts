@@ -95,9 +95,6 @@ async function loadImage(path: string): Promise<HTMLImageElement> {
     img.onload = () => {
       resolve();
     };
-    img.onerror = (err) => {
-      reject(err);
-    };
   });
   img.src = path;
   await loaded;
