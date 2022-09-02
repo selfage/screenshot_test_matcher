@@ -1,6 +1,6 @@
 import { asyncAssertScreenshot } from "./assertion";
 import { assertReject, assertThat, eqError } from "@selfage/test_matcher";
-import { PUPPETEER_TEST_RUNNER } from "@selfage/test_runner";
+import { TEST_RUNNER } from "@selfage/test_runner";
 import "@selfage/puppeteer_test_executor_api";
 
 async function setSampleImage(file: string): Promise<void> {
@@ -12,7 +12,7 @@ async function setSampleImage(file: string): Promise<void> {
   });
   img.src = file;
   await loaded;
-  await setViewport(img.width, img.height);
+  await puppeteerSetViewport(img.width, img.height);
   document.body.appendChild(img);
 }
 
@@ -24,13 +24,13 @@ function removeImage(): void {
 
 async function forceDeleteFile(file: string): Promise<void> {
   try {
-    await deleteFile(file);
+    await puppeteerDeleteFile(file);
   } catch (e) {
     // Ignore
   }
 }
 
-PUPPETEER_TEST_RUNNER.run({
+TEST_RUNNER.run({
   name: "NodeMatcherTest",
   environment: {
     setUp: () => {

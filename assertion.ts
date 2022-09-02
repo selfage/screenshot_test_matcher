@@ -29,7 +29,7 @@ export async function asyncAssertScreenshot(
     excludedAreas?: Array<Rectangle>;
   } = {}
 ): Promise<void> {
-  await screenshot(actualFile, { delay, fullPage, quality });
+  await puppeteerScreenshot(actualFile, { delay, fullPage, quality });
 
   let [expectedImg, actualImg] = await Promise.all([
     loadImage(expectedFile),
@@ -75,14 +75,17 @@ export async function asyncAssertScreenshot(
         reader.readAsBinaryString(blob);
       });
     });
-    await writeFile(diffFile, diffImgFileData);
+    await puppeteerWriteFile(diffFile, diffImgFileData);
     throw new Error(
       `Actual screenshot "${actualFile}" doesn't match expected ` +
         `"${expectedFile}".`
     );
   } else {
     try {
-      await Promise.all([deleteFile(actualFile), await deleteFile(diffFile)]);
+      await Promise.all([
+        puppeteerDeleteFile(actualFile),
+        puppeteerDeleteFile(diffFile),
+      ]);
     } catch (e) {
       // Ignore file-not-exists error.
     }
