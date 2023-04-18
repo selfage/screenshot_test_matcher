@@ -30,7 +30,25 @@ export async function asyncAssertScreenshot(
   } = {}
 ): Promise<void> {
   await puppeteerScreenshot(actualFile, { delay, fullPage, quality });
+  await asyncAssertImage(actualFile, expectedFile, diffFile, {
+    threshold,
+    excludedAreas,
+  });
+}
 
+export async function asyncAssertImage(
+  actualFile: string,
+  expectedFile: string,
+  diffFile: string,
+  {
+    threshold = 0.1,
+    excludedAreas = [],
+  }: {
+    // Range from 0 to 1. Smaller values make the comparison more sensitive.
+    threshold?: number;
+    excludedAreas?: Array<Rectangle>;
+  } = {}
+): Promise<void> {
   let [expectedImg, actualImg] = await Promise.all([
     loadImage(expectedFile),
     loadImage(actualFile),

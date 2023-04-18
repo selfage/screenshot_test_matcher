@@ -1,6 +1,6 @@
 {
   "name": "@selfage/screenshot_test_matcher",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Screenshot testing in browser.",
   "repository": {
     "type": "git",
@@ -34,12 +34,16 @@
     "**/*.d.ts",
     "**/*.js",
     "!**/*_test.*",
+    "!**/*_test_bin.*",
     "!test_data/**/*"
   ],
+  "assetExts": [
+    ".png"
+  ],
   "devDependencies": {
-    "@selfage/bundler_cli": "^4.0.0",
+    "@selfage/bundler_cli": "^4.0.3",
     "@selfage/cli": "^4.0.0",
-    "@selfage/test_matcher": "^1.1.2",
+    "@selfage/test_matcher": "^1.2.0",
     "@selfage/test_runner": "^4.0.0",
     "@selfage/tsconfig": "^1.0.7",
     "@types/pixelmatch": "^5.2.4",

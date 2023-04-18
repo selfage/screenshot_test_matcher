@@ -1,3 +1,7 @@
+import textV1 = require("./test_data/text.png");
+import textV2 = require("./test_data/text_v2.png");
+import textV3 = require("./test_data/text_v3.png");
+import path = require("path");
 import { asyncAssertScreenshot } from "./assertion";
 import { assertReject, assertThat, eqError } from "@selfage/test_matcher";
 import { TEST_RUNNER } from "@selfage/test_runner";
@@ -43,13 +47,13 @@ TEST_RUNNER.run({
       name: "Identical",
       execute: async () => {
         // Prepare
-        await setSampleImage("test_data/text.png");
+        await setSampleImage(textV1);
 
         // Execute
         await asyncAssertScreenshot(
-          "test_data/identical.png",
-          "test_data/text.png",
-          "test_data/identical_diff.png"
+          path.join(__dirname, "identical.png"),
+          textV1,
+          path.join(__dirname, "identical_diff.png")
         );
       },
       tearDown: () => {
@@ -60,14 +64,14 @@ TEST_RUNNER.run({
       name: "SameDimension",
       execute: async () => {
         // Prepare
-        await setSampleImage("test_data/text.png");
+        await setSampleImage(textV1);
 
         // Execute
         let error = await assertReject(
           asyncAssertScreenshot(
-            "test_data/same_dimension.png",
-            "test_data/text_v2.png",
-            "test_data/same_dimension_diff.png"
+            path.join(__dirname, "same_dimension.png"),
+            textV2,
+            path.join(__dirname, "same_dimension_diff.png")
           )
         );
 
@@ -81,8 +85,8 @@ TEST_RUNNER.run({
       tearDown: async () => {
         removeImage();
         await Promise.all([
-          forceDeleteFile("test_data/same_dimension.png"),
-          forceDeleteFile("test_data/same_dimension_diff.png"),
+          forceDeleteFile(path.join(__dirname, "same_dimension.png")),
+          forceDeleteFile(path.join(__dirname, "same_dimension_diff.png")),
         ]);
       },
     },
@@ -90,14 +94,14 @@ TEST_RUNNER.run({
       name: "DiffDimension",
       execute: async () => {
         // Prepare
-        await setSampleImage("test_data/text_v2.png");
+        await setSampleImage(textV3);
 
         // Execute
         let error = await assertReject(
           asyncAssertScreenshot(
-            "test_data/diff_dimension.png",
-            "test_data/text_v3.png",
-            "test_data/diff_dimension_diff.png"
+            path.join(__dirname, "/diff_dimension.png"),
+            textV3,
+            path.join(__dirname, "/diff_dimension_diff.png")
           )
         );
 
@@ -111,8 +115,8 @@ TEST_RUNNER.run({
       tearDown: async () => {
         removeImage();
         await Promise.all([
-          forceDeleteFile("test_data/diff_dimension.png"),
-          forceDeleteFile("test_data/diff_dimension_diff.png"),
+          forceDeleteFile(path.join(__dirname, "/diff_dimension.png")),
+          forceDeleteFile(path.join(__dirname, "/diff_dimension_diff.png")),
         ]);
       },
     },
@@ -120,13 +124,13 @@ TEST_RUNNER.run({
       name: "SameAfterExcluded",
       execute: async () => {
         // Prepare
-        await setSampleImage("test_data/text_v2.png");
+        await setSampleImage(textV2);
 
         // Execute
         await asyncAssertScreenshot(
-          "test_data/same_after_excluded.png",
-          "test_data/text_v3.png",
-          "test_data/same_after_excluded_diff.png",
+          path.join(__dirname, "/same_after_excluded.png"),
+          textV3,
+          path.join(__dirname, "/same_after_excluded_diff.png"),
           {
             excludedAreas: [
               {
