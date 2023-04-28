@@ -1,5 +1,9 @@
 import pixelmatch = require("pixelmatch");
-import "@selfage/puppeteer_test_executor_api";
+import {
+  deleteFile,
+  screenshot,
+  writeFile,
+} from "@selfage/puppeteer_test_executor/helper";
 
 export interface Rectangle {
   x: number;
@@ -29,7 +33,7 @@ export async function asyncAssertScreenshot(
     excludedAreas?: Array<Rectangle>;
   } = {}
 ): Promise<void> {
-  await puppeteerScreenshot(actualFile, { delay, fullPage, quality });
+  await screenshot(actualFile, { delay, fullPage, quality });
   await asyncAssertImage(actualFile, expectedFile, diffFile, {
     threshold,
     excludedAreas,
@@ -93,17 +97,14 @@ export async function asyncAssertImage(
         reader.readAsBinaryString(blob);
       });
     });
-    await puppeteerWriteFile(diffFile, diffImgFileData);
+    await writeFile(diffFile, diffImgFileData);
     throw new Error(
       `Actual screenshot "${actualFile}" doesn't match expected ` +
         `"${expectedFile}".`
     );
   } else {
     try {
-      await Promise.all([
-        puppeteerDeleteFile(actualFile),
-        puppeteerDeleteFile(diffFile),
-      ]);
+      await Promise.all([deleteFile(actualFile), deleteFile(diffFile)]);
     } catch (e) {
       // Ignore file-not-exists error.
     }

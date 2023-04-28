@@ -3,9 +3,12 @@ import textV2 = require("./test_data/text_v2.png");
 import textV3 = require("./test_data/text_v3.png");
 import path = require("path");
 import { asyncAssertScreenshot } from "./assertion";
+import {
+  deleteFile,
+  setViewport,
+} from "@selfage/puppeteer_test_executor/helper";
+import { TEST_RUNNER } from "@selfage/puppeteer_test_runner";
 import { assertReject, assertThat, eqError } from "@selfage/test_matcher";
-import { TEST_RUNNER } from "@selfage/test_runner";
-import "@selfage/puppeteer_test_executor_api";
 
 async function setSampleImage(file: string): Promise<void> {
   let img = document.createElement("img");
@@ -16,7 +19,7 @@ async function setSampleImage(file: string): Promise<void> {
   });
   img.src = file;
   await loaded;
-  await puppeteerSetViewport(img.width, img.height);
+  await setViewport(img.width, img.height);
   document.body.appendChild(img);
 }
 
@@ -28,7 +31,7 @@ function removeImage(): void {
 
 async function forceDeleteFile(file: string): Promise<void> {
   try {
-    await puppeteerDeleteFile(file);
+    await deleteFile(file);
   } catch (e) {
     // Ignore
   }
