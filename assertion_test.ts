@@ -6,7 +6,7 @@ import { asyncAssertScreenshot } from "./assertion";
 import {
   deleteFile,
   setViewport,
-} from "@selfage/puppeteer_test_executor/helper";
+} from "@selfage/puppeteer_test_executor_api";
 import { TEST_RUNNER } from "@selfage/puppeteer_test_runner";
 import { assertReject, assertThat, eqError } from "@selfage/test_matcher";
 

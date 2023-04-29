@@ -3,7 +3,7 @@ import {
   deleteFile,
   screenshot,
   writeFile,
-} from "@selfage/puppeteer_test_executor/helper";
+} from "@selfage/puppeteer_test_executor_api";
 
 export interface Rectangle {
   x: number;
