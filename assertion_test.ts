@@ -3,15 +3,13 @@ import textV2 = require("./test_data/text_v2.png");
 import textV3 = require("./test_data/text_v3.png");
 import path = require("path");
 import { asyncAssertScreenshot } from "./assertion";
-import {
-  deleteFile,
-  setViewport,
-} from "@selfage/puppeteer_test_executor_api";
+import { setViewport, deleteFile } from "@selfage/puppeteer_test_executor_api";
 import { TEST_RUNNER } from "@selfage/puppeteer_test_runner";
 import { assertReject, assertThat, eqError } from "@selfage/test_matcher";
 
-async function setSampleImage(file: string): Promise<void> {
-  let img = document.createElement("img");
+let img = document.createElement("img");
+
+async function loadImage(file: string): Promise<void> {
   let loaded = new Promise<void>((resolve) => {
     img.onload = () => {
       resolve();
@@ -20,13 +18,6 @@ async function setSampleImage(file: string): Promise<void> {
   img.src = file;
   await loaded;
   await setViewport(img.width, img.height);
-  document.body.appendChild(img);
-}
-
-function removeImage(): void {
-  if (document.body.firstElementChild) {
-    document.body.firstElementChild.remove();
-  }
 }
 
 async function forceDeleteFile(file: string): Promise<void> {
@@ -38,11 +29,16 @@ async function forceDeleteFile(file: string): Promise<void> {
 }
 
 TEST_RUNNER.run({
-  name: "NodeMatcherTest",
+  name: "AssertionTest",
   environment: {
     setUp: () => {
       document.body.style.margin = "0";
       document.body.style.padding = "0";
+      img = document.createElement("img");
+      document.body.appendChild(img);
+    },
+    tearDown: () => {
+      img.remove();
     },
   },
   cases: [
@@ -50,43 +46,39 @@ TEST_RUNNER.run({
       name: "Identical",
       execute: async () => {
         // Prepare
-        await setSampleImage(textV1);
+        await loadImage(textV1);
 
         // Execute
         await asyncAssertScreenshot(
           path.join(__dirname, "identical.png"),
           textV1,
-          path.join(__dirname, "identical_diff.png")
+          path.join(__dirname, "identical_diff.png"),
         );
-      },
-      tearDown: () => {
-        removeImage();
       },
     },
     {
       name: "SameDimension",
       execute: async () => {
         // Prepare
-        await setSampleImage(textV1);
+        await loadImage(textV1);
 
         // Execute
         let error = await assertReject(
           asyncAssertScreenshot(
             path.join(__dirname, "same_dimension.png"),
             textV2,
-            path.join(__dirname, "same_dimension_diff.png")
-          )
+            path.join(__dirname, "same_dimension_diff.png"),
+          ),
         );
 
         // Verify
         assertThat(
           error,
           eqError(new Error("doesn't match expected")),
-          "error"
+          "error",
         );
       },
       tearDown: async () => {
-        removeImage();
         await Promise.all([
           forceDeleteFile(path.join(__dirname, "same_dimension.png")),
           forceDeleteFile(path.join(__dirname, "same_dimension_diff.png")),
@@ -97,26 +89,25 @@ TEST_RUNNER.run({
       name: "DiffDimension",
       execute: async () => {
         // Prepare
-        await setSampleImage(textV3);
+        await loadImage(textV2);
 
         // Execute
         let error = await assertReject(
           asyncAssertScreenshot(
             path.join(__dirname, "/diff_dimension.png"),
             textV3,
-            path.join(__dirname, "/diff_dimension_diff.png")
-          )
+            path.join(__dirname, "/diff_dimension_diff.png"),
+          ),
         );
 
         // Verify
         assertThat(
           error,
           eqError(new Error("doesn't match expected")),
-          "error"
+          "error",
         );
       },
       tearDown: async () => {
-        removeImage();
         await Promise.all([
           forceDeleteFile(path.join(__dirname, "/diff_dimension.png")),
           forceDeleteFile(path.join(__dirname, "/diff_dimension_diff.png")),
@@ -127,7 +118,7 @@ TEST_RUNNER.run({
       name: "SameAfterExcluded",
       execute: async () => {
         // Prepare
-        await setSampleImage(textV2);
+        await loadImage(textV2);
 
         // Execute
         await asyncAssertScreenshot(
@@ -149,11 +140,37 @@ TEST_RUNNER.run({
                 height: 60,
               },
             ],
-          }
+          },
+        );
+      },
+    },
+    {
+      name: "ExpectedNotExists",
+      execute: async () => {
+        // Prepare
+        await loadImage(textV2);
+
+        // Execute
+        let error = await assertReject(
+          asyncAssertScreenshot(
+            path.join(__dirname, "/text_v2.png"),
+            path.join(__dirname, "/non.png"),
+            path.join(__dirname, "/text_v2_diff.png"),
+          ),
+        );
+
+        // Verify
+        assertThat(
+          error,
+          eqError(new Error("doesn't match expected")),
+          "error",
         );
       },
       tearDown: async () => {
-        removeImage();
+        await Promise.all([
+          forceDeleteFile(path.join(__dirname, "/text_v2.png")),
+          forceDeleteFile(path.join(__dirname, "/text_v2_diff.png")),
+        ]);
       },
     },
   ],
