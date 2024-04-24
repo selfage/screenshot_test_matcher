@@ -141,7 +141,7 @@ function getImageData(
 }
 
 function clearArea(img: ImageData, area: Rectangle): void {
-  for (let i = area.y; i < i + area.height && i < img.height; i++) {
+  for (let i = area.y; i < area.y + area.height && i < img.height; i++) {
     let startX = Math.min(img.width, area.x);
     let endX = Math.min(img.width, area.x + area.width);
     img.data.fill(0, (i * img.width + startX) * 4, (i * img.width + endX) * 4);
