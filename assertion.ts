@@ -31,7 +31,7 @@ export async function asyncAssertScreenshot(
     // Range from 0 to 1. Smaller values make the comparison more sensitive.
     threshold?: number;
     excludedAreas?: Array<Rectangle>;
-  } = {}
+  } = {},
 ): Promise<void> {
   await screenshot(actualFile, { delay, fullPage, quality });
   await asyncAssertImage(actualFile, expectedFile, diffFile, {
@@ -51,7 +51,7 @@ export async function asyncAssertImage(
     // Range from 0 to 1. Smaller values make the comparison more sensitive.
     threshold?: number;
     excludedAreas?: Array<Rectangle>;
-  } = {}
+  } = {},
 ): Promise<void> {
   let [expectedImg, actualImg] = await Promise.all([
     loadImage(expectedFile),
@@ -78,7 +78,7 @@ export async function asyncAssertImage(
     diffImg.data,
     maxWidth,
     maxHeight,
-    { threshold }
+    { threshold },
   );
   if (numOfDiff !== 0) {
     diffContext.putImageData(diffImg, 0, 0);
@@ -100,7 +100,7 @@ export async function asyncAssertImage(
     await writeFile(diffFile, diffImgFileData);
     throw new Error(
       `Actual screenshot "${actualFile}" doesn't match expected ` +
-        `"${expectedFile}".`
+        `"${expectedFile}".`,
     );
   } else {
     try {
@@ -130,7 +130,7 @@ async function loadImage(path: string): Promise<HTMLImageElement> {
 function getImageData(
   img: HTMLImageElement,
   maxWidth: number,
-  maxHeight: number
+  maxHeight: number,
 ): ImageData {
   let canvas = document.createElement("canvas");
   canvas.width = maxWidth;

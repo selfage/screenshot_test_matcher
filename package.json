@@ -41,9 +41,9 @@
     ".png"
   ],
   "devDependencies": {
-    "@selfage/bundler_cli": "^5.1.4",
+    "@selfage/bundler_cli": "^5.2.0",
     "@selfage/cli": "^5.0.0",
-    "@selfage/puppeteer_test_runner": "^1.1.0",
+    "@selfage/puppeteer_test_runner": "^1.3.0",
     "@selfage/test_matcher": "^2.0.0",
     "@selfage/tsconfig": "^1.0.7",
     "@types/pixelmatch": "^5.2.6",

@@ -3,7 +3,7 @@ import textV2 = require("./test_data/text_v2.png");
 import textV3 = require("./test_data/text_v3.png");
 import path = require("path");
 import { asyncAssertScreenshot } from "./assertion";
-import { setViewport, deleteFile } from "@selfage/puppeteer_test_executor_api";
+import { deleteFile, setViewport } from "@selfage/puppeteer_test_executor_api";
 import { TEST_RUNNER } from "@selfage/puppeteer_test_runner";
 import { assertReject, assertThat, eqError } from "@selfage/test_matcher";
 
